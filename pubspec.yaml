@@ -1,0 +1,30 @@
+name: singula
+description: Singula — твой персональный AI слуга
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  speech_to_text: ^6.6.0
+  flutter_tts: ^4.0.2
+  permission_handler: ^11.3.0
+  flutter_background_service: ^5.0.5
+  flutter_local_notifications: ^17.2.1
+  http: ^1.2.1
+  connectivity_plus: ^6.0.3
+  url_launcher: ^6.3.0
+  android_intent_plus: ^4.0.2
+  path_provider: ^2.1.3
+  shared_preferences: ^2.3.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
