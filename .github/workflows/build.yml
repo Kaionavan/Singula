@@ -1,0 +1,39 @@
+name: Build Singula APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Получить код
+        uses: actions/checkout@v4
+
+      - name: Установить Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Установить Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.27.4'
+          channel: 'stable'
+
+      - name: Получить зависимости
+        run: flutter pub get
+
+      - name: Собрать APK
+        run: flutter build apk --release
+
+      - name: Сохранить APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Singula-APK
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 30
