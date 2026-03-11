@@ -25,6 +25,11 @@ jobs:
           flutter-version: '3.27.4'
           channel: 'stable'
 
+      - name: Создать local.properties
+        run: |
+          echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
+          echo "sdk.dir=$ANDROID_SDK_ROOT" >> android/local.properties
+
       - name: Получить зависимости
         run: flutter pub get
 
