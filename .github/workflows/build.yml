@@ -35,12 +35,11 @@ jobs:
 
       - name: Патч манифеста
         run: |
-          sed -i 's/android:value="1"/android:value="2"/g' android/app/src/main/AndroidManifest.xml || true
+          find . -name "AndroidManifest.xml" -exec sed -i 's/android:value="1"/android:value="2"/g' {} \;
+          find . -name "AndroidManifest.xml" | xargs grep -l "flutterEmbedding" || echo "not found"
 
       - name: Собрать APK
-        run: |
-          flutter build apk --release 2>&1 || true
-          flutter build apk --release 2>&1 | grep -A5 "v1\|embedding\|deprecated\|error\|Error" | head -50
+        run: flutter build apk --release
 
       - name: Сохранить APK
         uses: actions/upload-artifact@v4
