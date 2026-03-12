@@ -23,7 +23,7 @@ jobs:
       - name: Установить Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.27.4'
+          flutter-version: '3.19.6'
           channel: 'stable'
 
       - name: Создать local.properties
