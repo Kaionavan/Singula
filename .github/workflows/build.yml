@@ -33,8 +33,13 @@ jobs:
       - name: Получить зависимости
         run: flutter pub get
 
+      - name: Патч манифеста
+        run: |
+          flutter upgrade --force
+          sed -i 's/android:value="1"/android:value="2"/g' android/app/src/main/AndroidManifest.xml || true
+
       - name: Собрать APK
-        run: flutter build apk --release --ignore-deprecation
+        run: flutter build apk --release
 
       - name: Сохранить APK
         uses: actions/upload-artifact@v4
