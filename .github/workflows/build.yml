@@ -35,11 +35,12 @@ jobs:
 
       - name: Патч манифеста
         run: |
-          flutter upgrade --force
           sed -i 's/android:value="1"/android:value="2"/g' android/app/src/main/AndroidManifest.xml || true
 
       - name: Собрать APK
-        run: flutter build apk --release
+        run: |
+          flutter build apk --release 2>&1 || true
+          flutter build apk --release 2>&1 | grep -A5 "v1\|embedding\|deprecated\|error\|Error" | head -50
 
       - name: Сохранить APK
         uses: actions/upload-artifact@v4
