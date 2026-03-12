@@ -1,4 +1,3 @@
-
 name: Build Singula APK
 
 on:
@@ -23,7 +22,7 @@ jobs:
       - name: Установить Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.41.4''
+          flutter-version: '3.41.4'
           channel: 'stable'
 
       - name: Создать local.properties
@@ -37,7 +36,7 @@ jobs:
       - name: Собрать APK
         run: flutter build apk --release --no-shrink
 
-      - name: Сохранить APК
+      - name: Сохранить APK
         uses: actions/upload-artifact@v4
         with:
           name: Singula-APK
