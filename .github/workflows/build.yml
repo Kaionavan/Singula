@@ -22,7 +22,7 @@ jobs:
       - name: Установить Flutter вручную
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.41.4'
+          flutter-version: '3.24.5'
           channel: 'stable'
 
       - name: Прогреть Flutter
@@ -35,13 +35,6 @@ jobs:
 
       - name: Получить зависимости
         run: flutter pub get
-
-      - name: Найти плагины с v1 embedding
-        run: |
-          echo "=== Ищем AndroidManifest.xml с v1 embedding ==="
-          find ~/.pub-cache -name "AndroidManifest.xml" | xargs grep -l 'android:value="1"' 2>/dev/null || echo "Не найдено"
-          echo "=== Ищем упоминания FlutterMain ==="
-          find ~/.pub-cache -name "AndroidManifest.xml" | xargs grep -l "FlutterMain" 2>/dev/null || echo "Не найдено"
 
       - name: Собрать APK
         run: flutter build apk --release
