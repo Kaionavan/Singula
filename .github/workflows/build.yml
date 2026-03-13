@@ -38,10 +38,12 @@ jobs:
 
       - name: Патч Flutter tools
         run: |
-          FLUTTER_PROJECT_DART="$FLUTTER_ROOT/packages/flutter_tools/lib/src/project.dart"
-          sed -i 's/throwToolExit.*v1 embedding.*$/\/\/ v1 check disabled/g' "$FLUTTER_PROJECT_DART"
-          rm -f "$FLUTTER_ROOT/bin/cache/flutter_tools.stamp"
-          rm -f "$FLUTTER_ROOT/bin/cache/flutter_tools.snapshot"
+          echo "=== Flutter root ==="
+          echo $FLUTTER_ROOT
+          echo "=== Ищем project.dart ==="
+          find $FLUTTER_ROOT -name "project.dart" | head -5
+          echo "=== Grep по всем dart файлам ==="
+          grep -rn "deleted Android v1" $FLUTTER_ROOT/packages/flutter_tools/lib/ | head -10
 
       - name: Собрать APK
         run: flutter build apk --release
