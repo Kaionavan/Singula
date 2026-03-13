@@ -39,10 +39,10 @@ jobs:
       - name: Патч Flutter tools
         run: |
           FILE="$FLUTTER_ROOT/packages/flutter_tools/lib/src/project.dart"
-          sed -i '820,825s/.*/\/\/ patched/' "$FILE"
-          sed -i '829,834s/.*/\/\/ patched/' "$FILE"
+          sed -i 's/if (result\.version != AndroidEmbeddingVersion\.v1) {/if (true) {/g' "$FILE"
+          sed -i 's/if (androidEmbeddingVersion == AndroidEmbeddingVersion\.v1) {/if (false) {/g' "$FILE"
           echo "=== Проверка ==="
-          sed -n '815,840p' "$FILE"
+          grep -n "if (true\|if (false\|v1)" "$FILE" | head -20
           rm -f "$FLUTTER_ROOT/bin/cache/flutter_tools.stamp"
           rm -f "$FLUTTER_ROOT/bin/cache/flutter_tools.snapshot"
 
