@@ -35,7 +35,8 @@ jobs:
       - name: Патч манифеста
         run: |
           find . -name "AndroidManifest.xml" -exec sed -i 's/android:value="1"/android:value="2"/g' {} \;
-          find . -name "AndroidManifest.xml" | xargs grep -l "flutterEmbedding" || echo "not found"
+          find $HOME/.pub-cache -name "AndroidManifest.xml" -exec sed -i 's/android:value="1"/android:value="2"/g' {} \;
+          find $HOME/.pub-cache -name "AndroidManifest.xml" | xargs grep -l "FlutterMain\|v1\|pluginClass" 2>/dev/null || echo "nothing suspicious"
 
       - name: Собрать APK
         run: flutter build apk --release
