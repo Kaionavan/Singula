@@ -32,17 +32,13 @@ jobs:
       - name: Получить зависимости
         run: flutter pub get
 
-      - name: Найти виновника
+      - name: Патч манифеста
         run: |
-          echo "=== Ищем v1 embedding в проекте ==="
-          grep -r "android:value=\"1\"" . --include="AndroidManifest.xml" -l 2>/dev/null || echo "не найдено в проекте"
-          echo "=== Ищем в pub-cache ==="
-          grep -r "android:value=\"1\"" $HOME/.pub-cache --include="AndroidManifest.xml" -l 2>/dev/null || echo "не найдено в pub-cache"
-          echo "=== Ищем FlutterMain в pub-cache ==="
-          grep -r "FlutterMain" $HOME/.pub-cache --include="AndroidManifest.xml" -l 2>/dev/null || echo "не найдено"
+          find . -name "AndroidManifest.xml" -exec sed -i 's/android:value="1"/android:value="2"/g' {} \;
+          find $HOME/.pub-cache -name "AndroidManifest.xml" -exec sed -i 's/android:value="1"/android:value="2"/g' {} \;
 
       - name: Собрать APK
-        run: flutter build apk --release --verbose 2>&1 | head -50
+        run: flutter build apk --release
 
       - name: Сохранить APK
         uses: actions/upload-artifact@v4
