@@ -36,11 +36,14 @@ jobs:
         run: flutter pub get
 
       - name: Собрать APK
-        run: flutter build apk --release
+        run: flutter build apk --release --verbose > /tmp/build_log.txt 2>&1 || true
 
-      - name: Сохранить APK
+      - name: Показать лог
+        run: cat /tmp/build_log.txt
+
+      - name: Сохранить лог
         uses: actions/upload-artifact@v4
         with:
-          name: Singula-APK
-          path: build/app/outputs/flutter-apk/app-release.apk
-          retention-days: 30
+          name: build-log
+          path: /tmp/build_log.txt
+          retention-days: 7
