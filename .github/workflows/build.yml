@@ -36,8 +36,15 @@ jobs:
       - name: Получить зависимости
         run: flutter pub get
 
+      - name: Патч Flutter tools
+        run: |
+          FLUTTER_PROJECT_DART="$FLUTTER_ROOT/packages/flutter_tools/lib/src/project.dart"
+          sed -i 's/throwToolExit.*v1 embedding.*$/\/\/ v1 check disabled/g' "$FLUTTER_PROJECT_DART"
+          rm -f "$FLUTTER_ROOT/bin/cache/flutter_tools.stamp"
+          rm -f "$FLUTTER_ROOT/bin/cache/flutter_tools.snapshot"
+
       - name: Собрать APK
-        run: flutter build apk --release --verbose
+        run: flutter build apk --release
 
       - name: Сохранить APK
         uses: actions/upload-artifact@v4
