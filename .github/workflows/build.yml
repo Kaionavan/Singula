@@ -38,12 +38,13 @@ jobs:
 
       - name: Патч Flutter tools
         run: |
-          echo "=== Flutter root ==="
-          echo $FLUTTER_ROOT
-          echo "=== Ищем project.dart ==="
-          find $FLUTTER_ROOT -name "project.dart" | head -5
-          echo "=== Grep по всем dart файлам ==="
-          grep -rn "deleted Android v1" $FLUTTER_ROOT/packages/flutter_tools/lib/ | head -10
+          FILE="$FLUTTER_ROOT/packages/flutter_tools/lib/src/project.dart"
+          sed -i "823s/.*/\/\/ patched/" "$FILE"
+          sed -i "832s/.*/\/\/ patched/" "$FILE"
+          echo "=== Проверка патча ==="
+          sed -n '820,835p' "$FILE"
+          rm -f "$FLUTTER_ROOT/bin/cache/flutter_tools.stamp"
+          rm -f "$FLUTTER_ROOT/bin/cache/flutter_tools.snapshot"
 
       - name: Собрать APK
         run: flutter build apk --release
