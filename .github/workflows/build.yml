@@ -19,31 +19,25 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Установить Flutter вручную
-        run: |
-          git clone https://github.com/flutter/flutter.git --depth 1 --branch 3.22.3 $HOME/flutter
-          echo "$HOME/flutter/bin" >> $GITHUB_PATH
-
-      - name: Прогреть Flutter
-        run: flutter precache --android
+      - name: Установить Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
 
       - name: Создать local.properties
         run: |
-          echo "flutter.sdk=$HOME/flutter" > android/local.properties
+          echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
           echo "sdk.dir=$ANDROID_SDK_ROOT" >> android/local.properties
 
       - name: Получить зависимости
         run: flutter pub get
 
       - name: Собрать APK
-        run: flutter build apk --release --verbose > /tmp/build_log.txt 2>&1 || true
+        run: flutter build apk --release
 
-      - name: Показать лог
-        run: cat /tmp/build_log.txt
-
-      - name: Сохранить лог
+      - name: Сохранить APK
         uses: actions/upload-artifact@v4
         with:
-          name: build-log
-          path: /tmp/build_log.txt
-          retention-days: 7
+          name: Singula-APK
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 30
