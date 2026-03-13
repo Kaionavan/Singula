@@ -22,6 +22,7 @@ jobs:
       - name: Установить Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.22.3'
           channel: 'stable'
 
       - name: Создать local.properties
@@ -31,11 +32,6 @@ jobs:
 
       - name: Получить зависимости
         run: flutter pub get
-
-      - name: Патч манифеста
-        run: |
-          find . -name "AndroidManifest.xml" -exec sed -i 's/android:value="1"/android:value="2"/g' {} \;
-          find $HOME/.pub-cache -name "AndroidManifest.xml" -exec sed -i 's/android:value="1"/android:value="2"/g' {} \;
 
       - name: Собрать APK
         run: flutter build apk --release
