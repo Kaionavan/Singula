@@ -19,14 +19,17 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Установить Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
+      - name: Установить Flutter вручную
+        run: |
+          git clone https://github.com/flutter/flutter.git --depth 1 --branch 3.22.3 $HOME/flutter
+          echo "$HOME/flutter/bin" >> $GITHUB_PATH
+
+      - name: Прогреть Flutter
+        run: flutter precache --android
 
       - name: Создать local.properties
         run: |
-          echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
+          echo "flutter.sdk=$HOME/flutter" > android/local.properties
           echo "sdk.dir=$ANDROID_SDK_ROOT" >> android/local.properties
 
       - name: Получить зависимости
