@@ -37,7 +37,7 @@ jobs:
         run: flutter pub get
 
       - name: Собрать APK
-        run: flutter build apk --release
+        run: flutter build apk --release --verbose 2>&1 | tail -50
 
       - name: Сохранить APK
         uses: actions/upload-artifact@v4
