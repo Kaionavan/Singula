@@ -17,7 +17,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     namespace "com.singula.app"
-    compileSdk 35
+    compileSdk 33
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -35,7 +35,7 @@ android {
     defaultConfig {
         applicationId "com.singula.app"
         minSdkVersion 21
-        targetSdkVersion 35
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
     }
@@ -45,6 +45,10 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.0"
 }
 
 flutter {
