@@ -27,7 +27,46 @@ jobs:
 
       - name: Прогреть Flutter
         run: flutter doctor
-
+      - name: Создать иконки приложения
+        run: |
+          mkdir -p android/app/src/main/res/mipmap-mdpi
+          mkdir -p android/app/src/main/res/mipmap-hdpi
+          mkdir -p android/app/src/main/res/mipmap-xhdpi
+          mkdir -p android/app/src/main/res/mipmap-xxhdpi
+          mkdir -p android/app/src/main/res/mipmap-xxxhdpi
+          for dir in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+            cp flutter/packages/flutter_tools/templates/app/android.tmpl/app/src/main/res/mipmap-${dir}/ic_launcher.png \
+               android/app/src/main/res/mipmap-${dir}/ic_launcher.png 2>/dev/null || \
+            python3 -c "
+          import struct, zlib
+          def png(w,h):
+              raw = b'\\x00' + b'\\x7f\\x00\\xff' * w
+              raw = raw * h
+              def chunk(t,d):
+                  c = zlib.crc32(t+d)&0xffffffff
+                  return struct.pack('>I',len(d))+t+d+struct.pack('>I',c)
+              return b'\\x89PNG\\r\\n\\x1a\\n' + chunk(b'IHDR',struct.pack('>IIBBBBB',w,h,8,2,0,0,0)) + chunk(b'IDAT',zlib.compress(raw)) + chunk(b'IEND',b'')
+          sizes={'mdpi':48,'hdpi':72,'xhdpi':96,'xxhdpi':144,'xxxhdpi':192}
+          import os
+          for d,s in sizes.items():
+              os.makedirs(f'android/app/src/main/res/mipmap-{d}',exist_ok=True)
+              open(f'android/app/src/main/res/mipmap-{d}/ic_launcher.png','wb').write(png(s,s))
+          " 2>/dev/null || true
+          done
+          python3 -c "
+          import struct, zlib, os
+          def png(w,h):
+              raw = (b'\\x00' + b'\\x6c\\x5c\\xe7' * w) * h
+              def chunk(t,d):
+                  c = zlib.crc32(t+d)&0xffffffff
+                  return struct.pack('>I',len(d))+t+d+struct.pack('>I',c)
+              return b'\\x89PNG\\r\\n\\x1a\\n' + chunk(b'IHDR',struct.pack('>IIBBBBB',w,h,8,2,0,0,0)) + chunk(b'IDAT',zlib.compress(raw)) + chunk(b'IEND',b'')
+          sizes={'mdpi':48,'hdpi':72,'xhdpi':96,'xxhdpi':144,'xxxhdpi':192}
+          for d,s in sizes.items():
+              os.makedirs(f'android/app/src/main/res/mipmap-{d}',exist_ok=True)
+              open(f'android/app/src/main/res/mipmap-{d}/ic_launcher.png','wb').write(png(s,s))
+          print('Icons created!')
+          "
       - name: Создать local.properties
         run: |
           echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
