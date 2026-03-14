@@ -49,6 +49,8 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.0"
+    implementation "androidx.core:core-ktx:1.10.1"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
     compileOnly files("$flutterRoot/bin/cache/artifacts/engine/android-arm/flutter.jar")
 }
 
