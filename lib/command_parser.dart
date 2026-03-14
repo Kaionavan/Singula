@@ -84,9 +84,9 @@ class CommandParser {
 enum CommandType {
   openApp, openUrl, search, call,
   time, date, timer, stop, clear,
+  alarm, weather, sendTelegram, sendWhatsapp,
   aiQuestion,
 }
-
 class Command {
   final CommandType type;
   final String payload;
